@@ -1,13 +1,24 @@
 import { Container } from "@material-ui/core";
-import Login from "./Login";
+import Login from "./components/Login";
 import React from 'react'
+import './app.css'
+import { connect } from 'react-redux'
+import Navbar from "./components/Navbar"
 
-function App() {
+function App({ googleId, imageUrl }) {
   return (
-    <Container maxWidth="xl">
-      <Login />
+    <Container maxWidth="xl" className="container">
+      {!googleId ? (
+        <Login />
+      ) : (
+        <>
+          <Navbar imageUrl={imageUrl}/>
+        </>
+      )}
     </Container>
   );
 }
 
-export default App;
+const stateToProps = state => ({ ...state.user })
+
+export default connect(stateToProps)(App);

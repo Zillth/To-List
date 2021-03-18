@@ -19,7 +19,6 @@ const Login = () => {
     
 
     const handleSuccess = result => {
-        console.log(result)
         dispatch(logIn(result.profileObj))
     }
 

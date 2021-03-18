@@ -1,12 +1,16 @@
 import { AppBar, Avatar, Toolbar, Button } from '@material-ui/core'
 import React from 'react'
 import useStyles from './styles.js'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../../actions/user'
 
 const Navbar = ({ imageUrl }) => {
     const classes = useStyles()
+    const dispatch = useDispatch()
 
     const logout = () => {
-
+        dispatch(setUser())
+        localStorage.removeItem('profile')
     }
 
     return (

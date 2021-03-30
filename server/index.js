@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import userRouter from './routes/user.js'
+import folderRouter from './routes/folder.js'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
@@ -15,6 +16,7 @@ app.use(cors())
 
 // Routes
 app.use('/user', userRouter)
+app.use('/folder', folderRouter)
 app.use('/', (req, res) => {
     res.status(200).json({ message: "Welcome to the API of To-List project by Alan Jomar Flores Rodriguez" })
 })

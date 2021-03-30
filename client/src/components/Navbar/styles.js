@@ -10,5 +10,13 @@ export default makeStyles(theme => ({
     logout: {
         position: "absolute",
         right: "15px"
-    }
+    },
+    btnContainer: {
+        width: "100%",
+        textAlign: "center",
+        marginTop: "20px"
+    },
+    addIcon: {
+        marginLeft: "20px"
+    },
 }))

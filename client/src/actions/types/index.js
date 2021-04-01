@@ -1,2 +1,5 @@
 export const SIGNIN = "SIGNIN"
 export const SET_USER = "SET_USER"
+export const PUSH_FOLDER = "PUSH_FOLDER"
+export const DELETE_FOLDER = "DELETE_FOLDER"
+export const UPDATE_FOLDER = "UPDATE_FOLDER"

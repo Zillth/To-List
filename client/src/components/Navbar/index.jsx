@@ -1,17 +1,19 @@
 import { AppBar, Avatar, Toolbar, Button, TextField } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import useStyles from './styles.js'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../../actions/user'
 import Modal from '../Modal/index.jsx'
 import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
+import { createFolder } from '../../actions/folder.js'
 
 const Navbar = ({ imageUrl }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const folderInput = useRef()
     const [modalOpen, setModalOpen] = useState(false)
-    const [folderName, setFolderName] = useState("")
+    const [folderTitle, setFolderTitle] = useState("")
 
     const logout = () => {
         dispatch(setUser())
@@ -20,10 +22,16 @@ const Navbar = ({ imageUrl }) => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        alert(folderName)
-        setFolderName("")
+        dispatch(createFolder(folderTitle))
+        setFolderTitle("")
         setModalOpen(false)
     }
+
+    useEffect(() => {
+        if (modalOpen) {
+            folderInput.current?.lastChild?.lastChild?.focus()
+        }
+    }, [modalOpen])
 
     return (
         <>
@@ -41,7 +49,7 @@ const Navbar = ({ imageUrl }) => {
                 <Modal>
 
                     <form className={classes.formContainer} onSubmit={handleSubmit}>
-                        <TextField label="Name" id="folder_name" value={folderName} onChange={e => setFolderName(e.target.value)} fullWidth />
+                        <TextField label="Title" value={folderTitle} ref={folderInput} onChange={e => setFolderTitle(e.target.value)} fullWidth />
                         <div className={classes.btnContainer}>
                             <Button color="primary" className={classes.addIcon} type="submit">
                                 <AddIcon />Add

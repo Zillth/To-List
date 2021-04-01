@@ -4,6 +4,7 @@ import React from 'react'
 import './app.css'
 import { connect } from 'react-redux'
 import Navbar from "./components/Navbar"
+import Folders from './components/Folders'
 
 function App({ googleId, imageUrl }) {
   return (
@@ -13,6 +14,7 @@ function App({ googleId, imageUrl }) {
       ) : (
         <>
           <Navbar imageUrl={imageUrl}/>
+          <Folders />
         </>
       )}
     </Container>

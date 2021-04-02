@@ -9,10 +9,16 @@ import Modal from '../../Modal'
 const Folder = ({ data }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+
     const folderTitleRef = useRef()
     const inputTitle = useRef()
+    const items = useRef()
+    const itemInput = useRef()
+
     const [modalOpen, setModalOpen] = useState(false)
     const [folderTitle, setFolderTitle] = useState(data.title)
+    const [item, setItem] = useState("")
+    const [addItem, setAddItem] = useState(false)
 
     const handleDelete = () => {
         dispatch(deleteFolder(data))
@@ -20,7 +26,13 @@ const Folder = ({ data }) => {
 
     const handleUpdate = e => {
         e.preventDefault()
-        dispatch(updateFolder(data.title, {title: folderTitle, elements: data.elements}))
+        dispatch(updateFolder(data, { title: folderTitle, elements: data.elements }))
+    }
+
+    const handleAddItem = e => {
+        e.preventDefault()
+        dispatch(updateFolder(data, { title: data.title, elements: [...data.elements, item] }))
+        setItem("")
     }
 
     useEffect(() => {
@@ -31,24 +43,41 @@ const Folder = ({ data }) => {
         modalOpen && inputTitle.current.lastChild.lastChild.focus()
     }, [modalOpen])
 
+    useEffect(() => {
+        addItem && itemInput.current.lastChild.lastChild.focus()
+    }, [addItem])
+
     return (
         <>
-            <Paper elevation={3} className={classes.folder}>
+            <Paper elevation={5} className={classes.folder}>
                 <div className={classes.data}>
                     <Typography variant="h6" ref={folderTitleRef} className={classes.clicked}>{data.title}</Typography>
-                </div>
-                <div className={classes.buttons}>
-                    <Button>Add</Button>
-                    {data.elements.length < 1 ? (
-                        <Button onClick={handleDelete}>Delete folder</Button>
-                    ) : (
-                        <div>
+                    <div className={classes.items} ref={items}>
+                        {addItem && (
+                            <form onSubmit={handleAddItem}>
+                                <TextField label="item" fullWidth value={item} onChange={e => setItem(e.target.value)} ref={itemInput} />
+                            </form>
+                        )}
+                        <div className={classes.flex}>
                             {data.elements.map(element => (
-                                <Element data={element} />
+                                <Element data={element} key={element} />
                             ))}
                         </div>
-                    )}
+                    </div>
                 </div>
+                {addItem ? (
+                    <div className={classes.buttons}>
+                        <Button onClick={() => setAddItem(false)} fullWidth>Accept</Button>
+                    </div>
+                ) : (
+                    <div className={classes.buttons}>
+                        <Button onClick={() => setAddItem(true)} fullWidth={data.elements.length >= 1}>Add</Button>
+                        {data.elements.length < 1 && (
+                            <Button onClick={handleDelete}>Delete folder</Button>
+                        )}
+                    </div>
+                )}
+
             </Paper>
             {modalOpen && (
                 <Modal>

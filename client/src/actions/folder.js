@@ -8,6 +8,6 @@ export const deleteFolder = folder => async dispatch => {
     dispatch({ type: DELETE_FOLDER, data: folder.title })
 }
 
-export const updateFolder = (folderID, folderUpdated) => async dispatch => {
-    dispatch({ type: UPDATE_FOLDER, data: { folderID, folderUpdated } })
+export const updateFolder = (folder, folderUpdated) => async dispatch => {
+    dispatch({ type: UPDATE_FOLDER, data: { folderID : folder.title, folderUpdated } })
 }

@@ -3,7 +3,7 @@ import { Button, Paper, Typography, TextField, } from '@material-ui/core'
 import Element from './Element'
 import useStyles from './styles'
 import { useDispatch } from 'react-redux'
-import { deleteFolder, updateFolder } from '../../../actions/folder'
+import { deleteFolder, updateFolder, deleteItems } from '../../../actions/folder'
 import Modal from '../../Modal'
 
 const Folder = ({ data }) => {
@@ -43,6 +43,11 @@ const Folder = ({ data }) => {
         setItem("")
     }
 
+    const handleDeleteItems = () => {
+        dispatch(deleteItems(data, selectedItems))
+        setSelectedItems([])
+    }
+
     useEffect(() => {
         folderTitleRef.current.addEventListener("click", () => setModalOpen(true))
     }, [folderTitleRef])
@@ -77,7 +82,7 @@ const Folder = ({ data }) => {
                     <div className={classes.buttons}>
                         <Button onClick={() => setAddItem(false)} fullWidth={selectedItems.length < 1}>Accept</Button>
                         {selectedItems.length > 0 && (
-                            <Button>Delete items</Button>
+                            <Button onClick={handleDeleteItems}>Delete items</Button>
                         )}
                     </div>
                     

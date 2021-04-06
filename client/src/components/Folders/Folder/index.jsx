@@ -12,13 +12,21 @@ const Folder = ({ data }) => {
 
     const folderTitleRef = useRef()
     const inputTitle = useRef()
-    const items = useRef()
     const itemInput = useRef()
 
     const [modalOpen, setModalOpen] = useState(false)
     const [folderTitle, setFolderTitle] = useState(data.title)
     const [item, setItem] = useState("")
     const [addItem, setAddItem] = useState(false)
+    const [selectedItems, setSelectedItems] = useState([])
+
+    const changeSelectedItem = item => {
+        if(selectedItems.find(it => it === item)) {
+            setSelectedItems([...selectedItems.filter(it => it !== item)])
+        } else {
+            setSelectedItems([...selectedItems, item])
+        }
+    }
 
     const handleDelete = () => {
         dispatch(deleteFolder(data))
@@ -52,7 +60,7 @@ const Folder = ({ data }) => {
             <Paper elevation={5} className={classes.folder}>
                 <div className={classes.data}>
                     <Typography variant="h6" ref={folderTitleRef} className={classes.clicked}>{data.title}</Typography>
-                    <div className={classes.items} ref={items}>
+                    <div className={classes.items}>
                         {addItem && (
                             <form onSubmit={handleAddItem}>
                                 <TextField label="item" fullWidth value={item} onChange={e => setItem(e.target.value)} ref={itemInput} />
@@ -60,20 +68,27 @@ const Folder = ({ data }) => {
                         )}
                         <div className={classes.flex}>
                             {data.elements.map(element => (
-                                <Element data={element} key={element} />
+                                <Element data={element} key={element} changeItems={changeSelectedItem}/>
                             ))}
                         </div>
                     </div>
                 </div>
                 {addItem ? (
                     <div className={classes.buttons}>
-                        <Button onClick={() => setAddItem(false)} fullWidth>Accept</Button>
+                        <Button onClick={() => setAddItem(false)} fullWidth={selectedItems.length < 1}>Accept</Button>
+                        {selectedItems.length > 0 && (
+                            <Button>Delete items</Button>
+                        )}
                     </div>
+                    
                 ) : (
                     <div className={classes.buttons}>
-                        <Button onClick={() => setAddItem(true)} fullWidth={data.elements.length >= 1}>Add</Button>
+                        <Button onClick={() => setAddItem(true)} fullWidth={data.elements.length >= 1 && selectedItems.length < 1}>Add</Button>
                         {data.elements.length < 1 && (
                             <Button onClick={handleDelete}>Delete folder</Button>
+                        )}
+                        {selectedItems.length > 0 && (
+                            <Button>Delete items</Button>
                         )}
                     </div>
                 )}

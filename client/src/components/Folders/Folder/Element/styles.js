@@ -6,5 +6,8 @@ export default makeStyles(theme => ({
         textAlign: "left",
         display: "flex",
         alignItems: "center",
+    },
+    item: {
+        width: "100%"
     }
 }))

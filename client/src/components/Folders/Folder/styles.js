@@ -21,10 +21,15 @@ export default makeStyles(theme => ({
         cursor: "pointer",
     }, 
     items: {
+        marginTop: "15px",
         marginRight: "10px",
         marginLeft: "10px",
         overflowY: "scroll",
+        overflowX: "hidden",
         height: "90%",
+        '&::-webkit-scrollbar': {
+            display: "none"
+        }
     },
     flex: {
         display: "flex",

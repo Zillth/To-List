@@ -1,11 +1,17 @@
 import { Container } from '@material-ui/core';
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
+import { connect, useDispatch } from 'react-redux'
+import { getFoldersUser } from '../../actions/folder';
 import Folder from './Folder';
 import useStyles from './styles'
 
 const Folders = ({ folders }) => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    useState(() => {
+        dispatch(getFoldersUser())
+    }, [])
+
     return (
         <>
             <Container maxWidth="xl" className={classes.container}>

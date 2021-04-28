@@ -4,7 +4,7 @@ import { createFolder, deleteFolder, getFolders, updateFolder } from '../control
 const router = express.Router()
 
 router.post('/', createFolder)
-router.get('/', getFolders)
+router.get('/:token', getFolders)
 router.patch('/:folderId', updateFolder)
 router.delete('/:folderId', deleteFolder)
 

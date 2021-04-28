@@ -16,7 +16,7 @@ app.use(cors())
 
 // Routes
 app.use('/user', userRouter)
-app.use('/folder', folderRouter)
+app.use('/folders', folderRouter)
 app.use('/', (req, res) => {
     res.status(200).json({ message: "Welcome to the API of To-List project by Alan Jomar Flores Rodriguez" })
 })

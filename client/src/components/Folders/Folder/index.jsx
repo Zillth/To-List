@@ -3,7 +3,7 @@ import { Button, Paper, Typography, TextField, } from '@material-ui/core'
 import Element from './Element'
 import useStyles from './styles'
 import { useDispatch } from 'react-redux'
-import { deleteFolder, updateFolder, deleteItems } from '../../../actions/folder'
+import { deleteFolder, updateFolder, deleteItems, pushItem } from '../../../actions/folder'
 import Modal from '../../Modal'
 
 const Folder = ({ data }) => {
@@ -39,7 +39,7 @@ const Folder = ({ data }) => {
 
     const handleAddItem = e => {
         e.preventDefault()
-        dispatch(updateFolder(data, { title: data.title, elements: [...data.elements, item] }))
+        dispatch(pushItem(data, item))
         setItem("")
     }
 

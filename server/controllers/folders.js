@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 import folderModel from '../models/folder.js'
+import mongoose from 'mongoose'
 
 export const createFolder = async (req, res) => {
     const { token, name } = req.body
@@ -14,12 +15,23 @@ export const createFolder = async (req, res) => {
     }
 }
 
-export const deleteFolder = (req, res) => {
-
+export const deleteFolder = async (req, res) => {
+    const { token, id } = req.params
+    const { googleId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET)
+    if (mongoose.isValidObjectId(id)) {
+        const state = await folderModel.deleteOne({ _id: id, userId: googleId })
+        res.status(200).json({ state })
+    } else res.status(500)
 }
 
-export const updateFolder = (req, res) => {
-
+export const updateFolder = async (req, res) => {
+    const { token, id } = req.params
+    const folderUpdated = req.body
+    const { googleId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET)
+    if (mongoose.isValidObjectId(id)) {
+        const state = await folderModel.updateOne({ _id: id, userId: googleId }, folderUpdated)
+        res.status(200).json({ state })
+    } else res.status(500)
 }
 
 export const getFolders = async (req, res) => {

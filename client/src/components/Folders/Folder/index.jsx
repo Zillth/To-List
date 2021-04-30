@@ -93,7 +93,7 @@ const Folder = ({ data }) => {
                             <Button onClick={handleDelete}>Delete folder</Button>
                         )}
                         {selectedItems.length > 0 && (
-                            <Button>Delete items</Button>
+                            <Button onClick={handleDeleteItems}>Delete items</Button>
                         )}
                     </div>
                 )}

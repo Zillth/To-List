@@ -40,3 +40,27 @@ export const getFolders = async (req, res) => {
     const folders = await folderModel.find({ userId: googleId })
     res.status(200).json({ folders })
 }
+
+export const pushItem = async (req, res) => {
+    const { token, id } = req.params
+    const { item } = req.body
+    const { googleId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET)
+    if (mongoose.isValidObjectId(id)) {
+        const folder = await folderModel.findById(id)
+        if (!folder.elements.find(element => element === item)) folder.elements.push(item)
+        const state = await folderModel.updateOne({ _id: id, userId: googleId }, folder)
+        res.status(200).json({ state })
+    } else res.status(500)
+}
+
+export const deleteItem = async (req, res) => {
+    const { token, id } = req.params
+    const items = req.body
+    const { googleId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET)
+    if (mongoose.isValidObjectId(id)) {
+        const folder = await folderModel.findById(id)
+        folder.elements = folder.elements.filter(elem => !items.includes(elem))
+        const state = await folderModel.updateOne({ _id: id, userId: googleId }, folder)
+        res.status(200).json({ state })
+    } else res.status(500)
+}
